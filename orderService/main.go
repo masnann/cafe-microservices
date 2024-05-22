@@ -34,6 +34,6 @@ func main() {
 	e.Use(middleware.Recover())
 
 	// Start server
-	e.Logger.Fatal(e.Start(":8081"))
+	e.Logger.Fatal(e.Start(":8080"))
 
 }
