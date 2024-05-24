@@ -1,35 +1,14 @@
-# Menggunakan gambar dasar golang untuk build stage
-FROM golang:1.16-alpine AS build
+# Dockerfile for OrderService
+FROM golang:1.18-alpine
 
-# Set working directory
 WORKDIR /app
 
-# Copy go.mod and go.sum
-COPY go.mod go.sum ./
-
-# Download dependencies
-RUN go mod download
-
-# Copy seluruh kode sumber
 COPY . .
 
-# Build aplikasi
-RUN go build -o order-service .
+RUN go mod download
 
-# Stage kedua, menggunakan gambar dasar alpine untuk menjalankan aplikasi
-FROM alpine:latest
+RUN go build -o main .
 
-# Set working directory
-WORKDIR /root/
+EXPOSE 8081
 
-# Copy binary dari build stage
-COPY --from=build /app/order-service .
-
-# Copy .env file
-COPY .env .env
-
-# Expose port yang digunakan
-EXPOSE 8080
-
-# Jalankan aplikasi
-CMD ["./order-service"]
+CMD ["./main"]
